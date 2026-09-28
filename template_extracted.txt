@@ -1,0 +1,684 @@
+=== PAGE 1 ===
+TE Mini Project Report
+On
+WRITE YOUR PROJECT TITLE HERE 
+WITH THE 18 FONT
+Submitted in partial fulfillment of the requirement of 
+University of Mumbai for the Degree of
+Bachelor of Engineering 
+in
+Artificial Intelligence and Data Science.
+Submitted By
+Member 1 Name with 14 Times Font Bold 
+Member 2 Name with 14 Times Font Bold 
+Member 3 Name with 14 Times Font Bold 
+Member 4 Name with 14 Times Font Bold
+Supervisor
+Guide Name with 14 Times Font Bold
+Department of Artificial Intelligence and Data Science.
+Smt. Indira Gandhi College of Engineering, Ghansoli – 400701
+An Autonomous Institute 
+Academic Year 2025 – 26
+
+=== PAGE 2 ===
+Department of Artificial Intelligence and Data Science.
+SMT. INDIRA GANDHI COLLEGE OF ENGINEERING
+GHANSOLI – 400701 (An Autonomous Institute)
+CERTIFICATE
+This is to certify that the requirements for the TE Mini Project report entitled ‘Project Title’ have 
+been successfully completed by the following students:
+Name
+Roll No.
+Member 1 Name
+A733
+Member 2 Name
+A733
+Member 3 Name
+A733
+Member 4 Name
+A733
+in partial fulfillment of Bachelor of Engineering in Department of Artificial Intelligence and Data Science, 
+Smt. Indira Gandhi College of Engineering, Ghansoli 401701,An Autonomous Institute
+during the 
+Academic Year 2025 – 2026.
+Name of Project Guide
+Supervisor 
+Dr. Shankar M. Patil                                                                                   Dr. Sunil Chavan
+Head of Department
+  Principal
+
+=== PAGE 3 ===
+Department of Artificial Intelligence and Data Science
+SMT. INDIRA GANDHI COLLEGE OF ENGINEERING
+GHANSOLI – 400701 (An Autonomous Institute)
+REPORT APPROVAL
+This TE Mini Project report entitled “Project Title” by Student Name1, Student Name2, Student Name3, 
+and Student Name4 is approved for the degree of Bachelor of Engineering Department of Artificial 
+Intelligence and Data Science, Smt. Indira Gandhi College of Engineering, Ghansoli. (An Autonomous 
+Institute)
+Examiners:
+1.  
+2.  
+Supervisors:
+1.  
+2.  
+Chairman:
+1.  
+Date: 
+Place:
+
+=== PAGE 4 ===
+Declaration
+We declare that this written submission for TE Mini Project Report Declaration entitled “Project 
+Title” represents our ideas in our own words and where others' ideas or words have been included. We have 
+adequately cited and referenced the original sources. We also declared that we have adhered to all principles 
+of academic honesty and integrity and have not misrepresented or fabricated or falsified any ideas / data / 
+fact / source in our submission. We understand that any violation of the above will cause disciplinary action 
+by the institute and also evoke penal action from the sources which have thus not been properly cited or from 
+whom paper permission has not been taken when needed.
+Project Group Members:
+Student 1 Name & Sign: 
+Student 2 Name & Sign: 
+Student 3 Name & Sign: 
+Student 4 Name & Sign: 
+Date: 
+Place:
+
+=== PAGE 5 ===
+Table of Contents
+Abstract................................................................................................................................
+i
+List of Figures......................................................................................................................
+ii
+List of Tables.......................................................................................................................
+iii
+1.
+Introduction.................................................................................................................
+1
+1.1
+Fundamentals...................................................................................................
+1
+1.2
+Objectives........................................................................................................
+1
+1.3
+Scope...............................................................................................................
+2
+1.4
+Outline………………………………..............................................................
+2
+2.
+Literature Survey.........................................................................................................
+3
+2.1
+Introduction……. ……………………............................................................
+3
+2.2
+Literature Review ………………………………………................................
+4
+2.3
+Summary of Literature Survey.…………………………................................
+4
+3.
+Proposed System(Replace with Name of your model/application)……………………
+5
+3.1
+Overview……………………..........................................................................
+6
+3.1.1
+Existing System Architecture……………………………………….
+8
+3.1.2
+Proposed System Architecture………………………………………
+9
+3.2
+Implementation Details ……….......................................................................
+10
+
+=== PAGE 6 ===
+3.2.1
+Algorithm / Tools/ Techniques
+10
+3.2.2
+UseCase/Activity Diagram
+10
+3.2.3
+Dataset and Input Details
+………………...................................
+11
+3.2.4
+Hardware and Software Specifications
+11
+4.
+Performance and Results
+13
+4.1
+Output and Graphs……………………………………………………
+14
+4.2
+Comparative Results
+15
+5.
+Applications
+16
+5.1
+Social
+17
+5.2
+Technical
+18
+6.
+Conclusion and Future Scope
+19
+References............................................................................................................................
+Acknowledgement…………………………………………………………………….........
+
+=== PAGE 7 ===
+Abstract
+Here, try to write the abstract in 12 to 15 lines. An abstract is a self-contained, short, and powerful 
+statement that describes a larger work. Components vary according to discipline. An abstract of a 
+social science or scientific work may contain the scope, purpose, results, and contents of the work. 
+An abstract is a brief summary of a work. It is often used to help the reader quickly ascertain the 
+report's purpose and work done.
+Give importance to your domain first. Mention techniques that are used in this domain. List what 
+are the different possible techniques. Write what are limitations of other techniques? Write why a 
+particular technique(s) is useful and used in this report. Describe your work in this report in 2 or 5 
+lines.
+i
+
+=== PAGE 8 ===
+List of Figures
+Figure 1.1
+Title of the figure
+1
+Figure 2.1
+ABC technique used by XYZ et al. [5]
+4
+Figure 3.1
+Classification of domain techniques
+6
+Figure 3.2
+Existing system architecture used for Content-based Systems
+8
+Figure 3.3
+Proposed system architecture (if any)
+9
+
+=== PAGE 9 ===
+ii
+List of Tables
+Table 1.1
+Title of the table
+1
+Table 2.1
+Summary of literature survey
+5
+Table 3.1
+Sample Dataset Used for Experiment
+11
+Table 3.2
+Hardware details
+11
+Table 3.3
+Software details
+11
+
+=== PAGE 10 ===
+iii
+Chapter 1
+(16pt Font, Times New Roman, Bold, Centre)
+Title of Chapter 1
+(16pt Font, Times New Roman, Bold, Centre)
+1.1 Fundamentals (12pt Font, Times New Roman, Bold)
+This is the first Section Heading. The text in each section will be of the following format (Times 
+New Roman 12, Justified, Line spacing 1.5). The same format is to be followed for all sections and 
+subsections.
+Page number must be in the footer of the page (starting from Introduction topic to references) and 
+aligned to the centre of the page. The figures are centre aligned.
+Fig 1.1: Title of the figure
+The Figure 1.1 shows the method to add figure in the text. The description about the figure is to be 
+written in one or two lines or more as per the requirements.
+1.2 Objectives (12pt Font, Times New Roman, Bold)
+The Table 1.1 shows the method to add table in the text. The description about the figure is to be 
+written in one or two lines or more as per the requirements. The tables are centre aligned.
+Table 1.1: Title of the table
+Attribute 1
+Attribute 2
+Attribute 3
+
+=== PAGE 11 ===
+Value 1
+Value 1
+Value 1
+Value 2
+Value 2
+Value 2
+1
+The objective is written in not more than 10 lines. The objective of this work is as follows:
+1. To study the recommendation techniques and identify their limitations that may help to 
+suggest a hybrid approach which may overcomes the drawbacks existing methods.
+2. To understand method of feature extraction for content based recommendation system and 
+collaborative filtering that may help user for decisions making.
+3. To identify evaluation metrics used for performance analysis of different recommendation 
+systems.
+1.3 Scope
+Give here the scope of the project. Project scope is the part of project planning that involves 
+determining and documenting a list of specific project goals, deliverables, tasks, costs and deadlines. 
+The Project Scope pertains to the work necessary to deliver a product. Requirements and 
+deliverables define the project scope. A scope statement should also include the list of users using 
+the product, as well as the features in the resulting product.
+1.4 Outline
+The outline of the report is written in not more than 10 lines. The report is organized as follows: The 
+introduction is given in Chapter 1. It describes the fundamental terms used in this project. It 
+motivates to study and understand the different techniques used in this work. This chapter also 
+presents the outline of the objective of the report. The Chapter 2 describes the review of the relevant 
+various techniques in the literature systems. It describes the pros and cons of each technique. The 
+Chapter 3 presents the Theory and proposed work. It describes the major approaches used in this 
+work. The societal and technical applications are mentioned in Chapter 4. The summary of the report 
+is presented in Chapter 5.
+
+=== PAGE 12 ===
+2
+Chapter 2 
+Literature Survey
+In this chapter the relevant techniques in literature is reviewed. It describes various techniques used 
+in the work. Identify the current literature on related domain problem. Identify the techniques that 
+have been developed and present the various advantages and limitation of these methods used 
+extensively in literature.
+Write advantage and disadvantage of this method. The summary of the literature presented at the 
+end of this Chapter.
+A literature review is an objective, critical summary of published research literature relevant to a 
+topic under consideration for research. Its purpose is to create familiarity with current thinking and 
+research on a particular topic, and may justify future research into a previously overlooked or 
+understudied area [1].
+A typical literature review consists of the following components:
+1. Introduction
+2. Main Body
+3. Conclusion
+4. References
+2.1 Technique Category One
+The techniques in this category are adapted to the individual needs, interests and preferences of user 
+or society. They are tools for suggesting items to users in this domain. Various techniques in this 
+category are listed here. These techniques have various advantages and are used extensively in 
+literature.
+2.1.1 Technique One
+
+=== PAGE 13 ===
+This technique is used by Author One [2] for XYZ purpose. It presents the state of the Art and 
+discusses the main issues related to this domain problem. It discusses various techniques starting 
+from simple techniques for representing structured data, to more complex techniques coming from 
+the unstructured data. Write advantage and disadvantage of this method. This work is divided into 
+three parts. Discuss each part here.
+2.1.2 Technique Two
+It was developed by Author Two et al. [3]. It presents the survey and experiments the two domain 
+related techniques. These techniques show the complementary advantages and disadvantages. It 
+compares the various techniques and shows which techniques are better based on the evaluation 
+metrics. This fact has provided incentive for research in this domain for improved performance. It 
+proposes various hybrid approaches that gives better results.
+2.2 Technique Category Two
+The techniques in this category are adapted to the individual needs, interests and preferences of user 
+or society. They are tools for suggesting items to users in this domain. Various techniques in this 
+category are listed here. These techniques have various advantages. Write advantage and 
+disadvantage of this method.
+2.2.1 Technique Three
+Author Three et al. [4] applied similar techniques on different datasets. It introduces the flow of the 
+domain system and the specific realization procedures of data input, data preprocessing, and other 
+related steps. Results show that this technique in this domain has shown great performance.
+2.2.2 Hybrid Approach One
+Author Four has presented a hybrid approach [5] for ABC domain technique for XYZ purposed. 
+The architecture is shown in Figure 2.1 It explores a new hybrid approach for solving the problem 
+of finding the solutions based on user inputs. The proposed technique provides improvements in 
+addressing two major challenges of this domain system: LMN and OPQ.
+
+=== PAGE 14 ===
+Fig. 2.1 ABC technique used by XYZ et al. [5]
+The evaluation of the system shows superiority of the solution compared to stand-alone user-based 
+ABC techniques. It shows that the hybrid approach improves the various problems.
+2.3 Literature Summary
+A literature review is an objective, critical summary of published research literature relevant to a 
+topic under consideration for research. The summary is presented here.
+Table 2.1 Summary of literature survey
+SN
+Paper
+Advantages and Disadvantages
+1.
+Author One [2]
+Advantages: Learning of profile is made easy.
+Quality improves over time. Considers implicit feedback.
+Disadvantages: Does not completely overcome the problem of abc and 
+xyz.
+2.
+Author Two et 
+al. [3]
+Advantages: The web site based on this has shown great performance. 
+Disadvantages: It does not recommend quality content to the users. Does 
+not consider new user ABC problem. Not very efficient in terms of 
+performance.
+3.
+Author Three et 
+al. [4]
+Advantages: The survey shows combine techniques for improved 
+performance.
+It improves the user preferences for suggesting items to users.
+
+=== PAGE 15 ===
+4.
+Author Four [5]
+Advantages: It solves the problem of finding xyz. It improves lmn 
+problem.
+Disadvantage: It does not consider the abc features which would give 
+better results and solve the abc problem.
+
+=== PAGE 16 ===
+Chapter 3 
+Proposed System
+3.1 Overview
+The system overview is presented in this Section. The classification of various techniques the 
+domain is given in Figure 3.1
+Fig. 3.1 Classification of domain techniques
+This system helps user to find information by providing them with personalized suggestions. Based 
+on above problems of researchers, recommendation techniques will have great influence in all 
+aspects of our life.
+Personalized Recommendation: The personalization is concern to adapting to the individual needs, 
+interests and preferences of each user. It includes recommending, filtering and predicting techniques. 
+From a business perspective, it is viewed as part of Customer Relationship Management (CRM) 
+these techniques are content based recommendation system, collaborative filtering and knowledge 
+based recommendation.
+Non personalized recommendation: Non-personalized recommender systems are the simplest
+
+=== PAGE 17 ===
+type of recommender systems. As the name suggest, these types of recommender systems do not 
+take into account the personal preferences of the users. The recommendations produced by these 
+systems are identical for each customer. For example, if we go to amazon.com as an anonymous 
+user it shows items that are currently viewed by other members. These systems recommend items 
+to consumers based on what other consumers have said about the items or rated them on an average. 
+Non-personalized recommender systems mainly use two types of algorithms: Aggregated opinion 
+recommender and Basic product association recommender.
+Aggregated opinion recommender: It displays the recommendations with a score which is an 
+average of the ratings given to that specific thing by other customers. This score is basically a 
+measure of how good the restaurant is. It scores generally range from 0 to 5. The average score 
+calculated for most of such guides is as given in Equation 1.
+Score = round (MEAN (ratings)*10) or simply as Score =MEAN (ratings*10)
+(3.1)
+Averages are useful for an overall sense of what the population feels. However these averages lack 
+context during recommendations. In above examples one bad rating or review has a lot of weight 
+and can pull down an otherwise excellent rating. To tackle this issue, some websites tallied the 
+percentage of people who rated a particular item “good” or “bad. This leads us to the concept of 
+product association recommender.
+Content Based Recommender Systems: Systems implementing a content based recommendation 
+approach analyze a set of documents and/or descriptions of items previously rated by a user, and 
+build a model or profile of user interests based on the features of the objects rated by that user. The 
+profile is a structured representation of user interests, adopted to recommend new interesting items. 
+The recommendation process basically consists in matching up the attributes of the user profile 
+against the attributes of a content object. The result is a relevance judgment that represents the user’s 
+level of interest in that object. If a profile accurately reflects user preferences, it is of tremendous 
+advantage for the effectiveness of an information access process. For instance, it could be used to 
+filter search results by deciding whether a user is interested in a specific Web page or not and, in the 
+negative case, preventing it from being displayed.
+
+=== PAGE 18 ===
+3.1.1 Existing System Architecture
+The Content Based Information Filtering (IF) systems need proper techniques for representing the 
+items and producing the user profile, and some strategies for comparing the user profile with the 
+item representation.
+Fig. 3.2 Existing system architecture used for Content- based Systems [2]
+The high level architecture of a content- based recommender system is depicted in Figure 3.2. The 
+recommendation process is performed in three steps, each of which is handled by a separate 
+component:
+●
+Content Analyzer: When information has no structure (e.g. text), some kind of pre-
+processing step is needed to extract structured relevant information. The main responsibility 
+of the component is to represent the content of items (e.g. documents, Web pages, news, 
+product descriptions, etc.) coming from in- formation sources in a form suitable for the next 
+processing steps.
+●
+Profile Learner: This module collects data representative of the user preferences and tries 
+to generalize this data, in order to construct the user profile. Usually, the generalization 
+strategy is realized through machine learning techniques, which are able to infer a model
+
+=== PAGE 19 ===
+of user interests starting from items liked or disliked in the past. For instance, the profile 
+learner of a Web page recommender can implement a relevance feedback method in which 
+the learning technique combines vectors of positive and negative examples into a prototype 
+vector representing the user profile.
+●
+Filtering Component: This module exploits the user profile to suggest relevant items by 
+matching the profile representation against that of items to be recommended. The result is a 
+binary or continuous relevance judgment (computed using some similarity metrics), the 
+latter case resulting in a ranked list of potentially interesting items.
+3.1.2 Proposed System Architecture
+The previous sections discussed the strengths and weaknesses of exiting system. In order to achieve 
+better domain results, researchers combined both techniques to build Hybrid domain systems, which 
+seek to inherit vantages and eliminate disadvantages.
+In general, hybrid recommenders are systems that combine multiple recommendation techniques 
+together to achieve a synergy between them. Although there exist a number of recommendation 
+approaches that are practical to merge (i.e. Collaborative, Content-based, Demographic and 
+Knowledge-based Recommender), our work will mainly focus on the combination of CF and CBF 
+techniques. The proposed architecture is shown in Figure 3.3
+Fig. 3.3 Proposed system architecture (if any)
+Depending on the domain and data characteristics, different types of combinations might produce 
+dissimilar outputs. The following list describes several hybridization techniques that come into
+
+=== PAGE 20 ===
+consideration to merge CF and CBF recommenders
+●
+Weighted hybrid: This hybrid combines scores from each component using linear formula. 
+Therefore, components must be able to produce its recommendation score which can be linearly 
+combinable. Also, the components have to be consistent relative accuracy across the product 
+space and to perform uniformly.
+●
+Switching hybrid: The issue of this hybrid is selecting one recommender among candidates. 
+This selection is made according to the situation it is experiencing. The criterion for the selection 
+like confidence value or external criteria should exist and the components might have different 
+performance with different situations.
+●
+Mixed hybrid: This is a hybrid which is based on the merging and presentation of multiple 
+ranked lists into one. Each component of this hybrid should be able to produce recommendation 
+lists with ranks and the core algorithm of mixed hybrid merges them into a single ranked list.
+●
+Feature combination hybrid: There exist two very different recommendation components for 
+this hybrid, contributing and actual recommender. The actual recommender works with data 
+modified by the contributing one. The contributing one injects features of one source to the 
+source of the other component.
+●
+Feature augmentation hybrid: This is similar to the feature combination hybrids but different 
+that the contributor generates new features. It is more flexible and adds smaller dimension than 
+feature combination method.
+●
+Cascade hybrid: This one is a tie breaker. The secondary recommender is just a tie breaker 
+and does refinements.
+●
+Meta-level hybrid: For this one, contributing and actual recommenders exist but the former 
+one completely replaces the data for the latter one, not just part of i
+Hybrid models discussed two techniques that have merged in four different ways. Write about it.
+3.2 Implementation Details
+The implementation detail is given in this section.
+3.2.1 Technique ABC
+Explain the techniques to be implemented with example. The procedure in detail is given in this 
+Section. An algorithm shouldn't have computer code. Instead, the algorithm should be written in
+
+=== PAGE 21 ===
+such a way that, it can be used in similar programming languages. Algorithms are a way to 
+communicate about your problem/solution with other people. Also it is a possible way to solve a 
+given problem.
+3.2.2 Use Case Diagram / Activity Diagram
+Explain the diagram if any. Explain each block in at least one line with possible example. The 
+procedure is given as follows. Give steps.
+3.2.3 Output and Dataset
+An experiment is conducted in order to identify the input/output behavior of the system. Identify 
+inputs. Specify the sample inputs that would be used in the experiments. The sample dataset used 
+in the experiment are identified and given in Table 3.1
+Table 3.1 Sample Dataset Used for Experiment
+Dataset
+Users
+Items
+Interactions
+Type
+Filmtipset
+81,282
+64,747
+19,812,490
+Information
+Last.fm 10, 681
+359, 349
+160, 154
+3, 778, 552, 887
+Personalized radio
+Movielens
+71, 567
+10,681
+10, 000, 054
+Information
+3.2.4 Hardware and Software Specifications
+The experiment setup is carried out on a computer system which has the different hardware and 
+software specifications as given in Table 3.2 and Table 3.3 respectively.
+Table 3.2 Hardware details
+Processor
+2 GHz Intel
+HDD
+180 GB
+RAM
+2 GB
+
+=== PAGE 22 ===
+Table 3.3 Software details
+Operating System
+Windows XP Professional With Service pack 2
+Programming Language
+JDK 1.8
+Database
+Oracle 9
+
+=== PAGE 23 ===
+Chapter 4 
+Performance and Results
+4.1
+Graphs:
+(explain/discuss the results wit respect to figures)
+Fig 4.1 Graph showing increase in accuracy as number of epochs is increased
+Fig 4.2 Graph showing decrease in loss as number of epochs is increased
+
+=== PAGE 24 ===
+Table 4.3 Confusion Matrix for our model
+True positive = 1134
+False positive = 8
+False negative = 15
+True negative =147
+4.2
+Comparative Results
+Add screen shots of results.
+Output Details and Screenshots
+
+=== PAGE 25 ===
+Chapter 5 
+Applications
+There are various applications of this domain system. The application is listed here.
+5.1 Social
+Broadcast News Audio
+Broadcasting news is considered as an important and interesting application field of content based 
+audio classification systems. Since this system is used for segmenting audio streams into expressive 
+regions, it has received special attention. For detection of particular event or file audio classification 
+is used. The aim of using audio classification in news broadcasting is classifying recorded sound 
+into pure speech and the other specified classes. So, the news can be smoothly broadcasted without 
+any interruption.
+Information Retrieval
+The semantic retrieval of information is one of the applications in this field. The content based 
+information retrieval has been developed using standards e.g. MPEG-7 [9]. For retrieving the data 
+from the database, it is necessary to classify the data into similar type. So, it can be easily retrieved 
+by the user. It is an easy task for user who might not have the knowledge about how the information 
+is stored in the database.
+5.2 Technical
+Video Indexing
+The audio classification system can be used in video indexing. The video is classified into different 
+classes containing distinct features or properties with the help of classifier. So, the user can access 
+the particular video by using the index or class of that video.
+5.4 Content Analysis
+Content based classification system can be used for analysis of audio/video content. Audio 
+classification is also used in speaker identification for analysis of content [10]. In video/audio 
+content, the number of speakers is undefined. So, in order to identify the particular speaker in the
+
+=== PAGE 26 ===
+given content audio classification is used. Also it is applied to analyze the content whether noise is 
+present in content.
+Dubbing of audio
+The content based audio classification system can be used in dubbing of audio. While dubbing it is 
+necessary to classify it, because an audio contains different types of sound. So in order to identify 
+sound of a particular class, audio classification is used.
+Multimedia Content Retrieval
+The classification is widely used concept for multimedia retrieval. Multimedia data consists of 
+images, texts, audios, and videos. It is necessary to arrange these classes in form of clusters of same 
+type. So, the user can easily retrieve the multimedia data according to his/her choice. The multimedia 
+data has been stored in the database, so the user can easily access that data.
+Searching for Particular Sound
+Searching for particular sound is the most commonly used application of content based audio 
+classification. The audio data is classified into different classes or sound. So, the user can easily 
+search a particular sound or class. It can also be used to identify different sounds like barking of 
+dog, laughing etc.
+
+=== PAGE 27 ===
+Chapter 6 
+Conclusion and Future Scope
+In this report, the study of different domain techniques is presented. The different techniques such 
+as ABC, XYZ, content based, and collaborative filtering is explained with examples. The different 
+hybrid approaches are also described. The comparative study of various techniques mentioned above 
+is presented in this report. The hybrid approach is proposed with xyz modification. The performance 
+measures like precision and recall are described in this report. The different standard datasets or 
+variable inputs are defined that may be used in experiment for this domain system. The two datasets 
+identified for experiments are CDEF and JKLM. The applications of this domain are identified and 
+presented.
+
+=== PAGE 28 ===
+References
+(The following text shall be 12pt Font, Times New Roman, Justified, 1.5 line spacing)
+(All papers/theses/articles/letters/reports/urls used for writing project synopsis has to be mentioned in the 
+Reference Section (here) and must to be cited in the report text wherever referred. For more details refer 
+the url https://www.ieee.org/documents/ieeecitationref.pdf )
+[1] Pamela Fry (Thompson Rivers University). Literature Review Template [Online]. Available 
+FTP: https://www.tru.ca/ shared/assets/Literature_Review_Template30564.pdf
+[2] J. K. Author, “Name of paper,” Abbrev. Title of Periodical, vol. x, no. x, pp. xxx-xxx, Abbrev. 
+Month, year.
+[3] R. E. Kalman, “New results in linear filtering and prediction theory,” J. Basic Eng., ser. D, vol. 
+83, pp. 95-108, Mar. 1961.
+[4] A. B. Author. (year). Title (edition) [Type of medium]. Available FTP: Directory: File:
+[5] R. J. Vidmar. (1994). On the use of atmospheric plasmas as electromagnetic reflectors 
+[Online]. Available FTP: atmnext.usc.edu Directory: pub/etext/1994 File: atmosplasma.txt.
+[6] A. B. Author, “Title of paper,” in Unabbreviated Name of Conf., City of Conf., Abbrev. State 
+(if given), year, pp. xxx-xxx.
+
+=== PAGE 29 ===
+Acknowledgement
+(The following text shall be 12pt Font, Times New Roman, Justified, 1.5 line spacing)
+We would like to express our special thanks to Prof. Name of Guide  , our mini project 
+guide who guided us through the project and who helped us in applying the knowledge that we have 
+acquired during the semester and learning new concepts.
+We would like to express our special thanks to Dr. Shankar M. Patil  Head, Department of 
+Department of Artificial Intelligence and Data Science, who gave us the opportunity to do this mini 
+project because of which we learned new concepts and their application.
+We are also thankful to our mini project coordinator Prof. Nirosha Uppu along with other 
+faculties for their encouragement and support.
+Finally we would like to express our specials thanks of gratitude to Principal Dr. Sunil Chavan
+who
+gave
+us
+the
+opportunity
+and
+facilities
+to
+conduct
+this
+mini
+project.
+.…….…………………………………………………………………………………………………
+….…………………………………………………………………………………………………… 
+Last paragraph may be used for others/family.
+……………………………………………………………………………………………….………
+…………………………………………………………………………………………….…………
+………………………………………………………………………………………….……………
+….…………………………………………………………………………………………………….
+…………………………………………………………
+Project member name 1 
+Project member name 2 
+Project member name 3 
+Project member name 4
+

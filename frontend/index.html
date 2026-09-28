@@ -1,0 +1,556 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Syntaxa AI — AI-Powered Context-Aware Writing Intelligence</title>
+  <meta name="description" content="Syntaxa AI analyzes grammar, spelling, punctuation, clarity, sentence structure, and vocabulary to evaluate and explain writing improvements.">
+  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2226%22>✨</text></svg>">
+</head>
+<body>
+
+  <!-- Top App Navigation & Header -->
+  <header class="app-header">
+    <div class="header-container">
+      
+      <!-- Brand -->
+      <div class="brand-wrapper">
+        <div class="brand-logo-icon">S</div>
+        <div class="brand-text">
+          <h1>Syntaxa AI <span class="brand-badge">Intelligence v1.0</span></h1>
+          <p>Context-Aware Grammar & Linguistic Writing Platform</p>
+        </div>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-tabs" role="tablist">
+        <button class="nav-tab-btn active" id="tabBtnEditor" data-target="tabEditor">
+          <span>✍️</span> Editor & Intelligence
+        </button>
+        <button class="nav-tab-btn" id="tabBtnDiff" data-target="tabDiff">
+          <span>⚖️</span> Before vs After
+        </button>
+        <button class="nav-tab-btn" id="tabBtnExplain" data-target="tabExplain">
+          <span>🎓</span> Explain My Error
+        </button>
+        <button class="nav-tab-btn" id="tabBtnReport" data-target="tabReport">
+          <span>📊</span> Detailed Report
+        </button>
+        <button class="nav-tab-btn" id="tabBtnProfile" data-target="tabProfile">
+          <span>📈</span> Writing Profile
+        </button>
+      </nav>
+
+      <!-- Action Controls -->
+      <div class="header-actions">
+        <!-- Mode Selector -->
+        <div class="mode-select-wrapper" title="Select Writing Mode / Style Transformation">
+          <span class="mode-select-label">Mode:</span>
+          <select id="writingModeSelect" class="mode-select">
+            <option value="grammar_fix">⚡ Grammar Fix (Preserve Style)</option>
+            <option value="professional">💼 Professional (Formal & Clear)</option>
+            <option value="academic">🎓 Academic (Scholarly & Objective)</option>
+            <option value="simple">💡 Simple (Plain Language)</option>
+            <option value="concise">✂️ Concise (Trim Wordiness)</option>
+          </select>
+        </div>
+
+        <!-- Sample Load Button -->
+        <button class="btn btn-secondary btn-sm" id="btnLoadSample" title="Load sample document with all prompt error types">
+          <span>📝</span> Sample
+        </button>
+
+        <!-- Hidden Upload Input -->
+        <input type="file" id="fileUploadInput" accept=".txt,.docx,.pdf,.md" style="display: none;">
+        <button class="btn btn-secondary btn-sm" id="btnTriggerUpload" title="Upload .txt, .docx, or .pdf assignment">
+          <span>📁</span> Upload
+        </button>
+
+        <!-- Analyze Button -->
+        <button class="btn btn-primary" id="btnAnalyze">
+          <span id="btnAnalyzeIcon">✨</span>
+          <span id="btnAnalyzeText">Analyze Writing</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Viewports -->
+  <main class="app-main">
+
+    <!-- ====================================================================
+         Tab 1: Editor & Intelligence Workspace
+         ==================================================================== -->
+    <section class="tab-pane active" id="tabEditor">
+      <div class="workspace-grid">
+        
+        <!-- Left: Interactive Editor -->
+        <div class="editor-card">
+          <div class="editor-header-bar">
+            <div class="doc-meta">
+              <input type="text" class="doc-title-input" id="docTitleInput" value="Assignment: Deep Learning & NLP" placeholder="Document Title...">
+              <div class="doc-lang-pill" id="langPill">
+                <span>🌐</span> <span id="langName">English</span> (<span id="langConfidence">99%</span>)
+              </div>
+            </div>
+            <div class="editor-quick-actions">
+              <button class="btn btn-accent btn-sm" id="btnApplyAllEditor" title="Apply all suggested corrections">
+                <span>✓</span> Accept All
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btnClearEditor" title="Clear text area">
+                <span>🗑️</span> Clear
+              </button>
+              <button class="btn btn-secondary btn-sm" id="btnExport" title="Export document">
+                <span>💾</span> Export
+              </button>
+            </div>
+          </div>
+
+          <!-- Dual Layer Highlighting Editor -->
+          <div class="editor-wrapper" id="editorWrapper">
+            <div class="editor-highlight-layer" id="editorHighlights"></div>
+            <textarea class="editor-textarea" id="editorTextarea" placeholder="Paste your essay, assignment, or document here, or drag & drop a file (.txt, .docx, .pdf)..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Live Word / Stats Bar -->
+          <div class="editor-status-bar">
+            <div class="metrics-pills">
+              <div class="metric-pill"><span>Words:</span> <strong id="statWords">0</strong></div>
+              <div class="metric-pill"><span>Characters:</span> <strong id="statChars">0</strong></div>
+              <div class="metric-pill"><span>Sentences:</span> <strong id="statSentences">0</strong></div>
+              <div class="metric-pill"><span>Reading Time:</span> <strong id="statReadTime">0m</strong></div>
+            </div>
+            <div class="mode-badge-indicator" id="currentModeIndicator" style="font-size: 0.78rem; color: var(--text-muted);">
+              Active Engine: <strong>spaCy Core Web LG + Context Patcher</strong>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Zone -->
+          <div class="file-dropzone" id="fileDropZone">
+            <div class="dropzone-icon">📥</div>
+            <div class="dropzone-text">
+              <strong>Drag & drop documents here</strong> or click <em>Upload</em> above. Supports <strong>.txt</strong>, <strong>.docx</strong>, and <strong>.pdf</strong> files.
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Live Intelligence Dashboard -->
+        <div class="dashboard-card">
+
+          <!-- Overall Score Radial Gauge -->
+          <div class="score-overview-box">
+            <div class="gauge-container">
+              <svg class="gauge-svg" viewBox="0 0 100 100">
+                <defs>
+                  <linearGradient id="scoreGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#8b5cf6" />
+                    <stop offset="50%" stop-color="#3b82f6" />
+                    <stop offset="100%" stop-color="#10b981" />
+                  </linearGradient>
+                </defs>
+                <circle class="gauge-bg" cx="50" cy="50" r="45"></circle>
+                <circle class="gauge-val" id="scoreCircle" cx="50" cy="50" r="45"></circle>
+              </svg>
+              <div class="gauge-text">
+                <div class="gauge-number" id="overallScoreVal">--</div>
+                <div class="gauge-label">Score</div>
+              </div>
+            </div>
+
+            <div class="score-summary-text">
+              <h3>Writing Quality</h3>
+              <span class="score-level-badge score-level-good" id="scoreLevelBadge">Pending Analysis</span>
+              <p id="scoreTargetAudience">Upload or write text and click <strong>Analyze Writing</strong> to compute linguistic metrics.</p>
+            </div>
+          </div>
+
+          <!-- Sub-Scores Breakdown -->
+          <div class="subscores-box">
+            <!-- Grammar -->
+            <div class="subscore-item">
+              <div class="subscore-header">
+                <span class="subscore-name"><span style="color: var(--color-grammar);">●</span> Grammar</span>
+                <span class="subscore-val" id="scoreGrammarVal">--</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressGrammar" style="width: 0%; background: var(--color-grammar);"></div>
+              </div>
+            </div>
+
+            <!-- Spelling -->
+            <div class="subscore-item">
+              <div class="subscore-header">
+                <span class="subscore-name"><span style="color: var(--color-spelling);">●</span> Spelling</span>
+                <span class="subscore-val" id="scoreSpellingVal">--</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressSpelling" style="width: 0%; background: var(--color-spelling);"></div>
+              </div>
+            </div>
+
+            <!-- Punctuation -->
+            <div class="subscore-item">
+              <div class="subscore-header">
+                <span class="subscore-name"><span style="color: var(--color-punctuation);">●</span> Punctuation</span>
+                <span class="subscore-val" id="scorePunctVal">--</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressPunct" style="width: 0%; background: var(--color-punctuation);"></div>
+              </div>
+            </div>
+
+            <!-- Clarity -->
+            <div class="subscore-item">
+              <div class="subscore-header">
+                <span class="subscore-name"><span style="color: var(--color-clarity);">●</span> Clarity</span>
+                <span class="subscore-val" id="scoreClarityVal">--</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressClarity" style="width: 0%; background: var(--color-clarity);"></div>
+              </div>
+            </div>
+
+            <!-- Vocabulary -->
+            <div class="subscore-item">
+              <div class="subscore-header">
+                <span class="subscore-name"><span style="color: var(--color-vocabulary);">●</span> Vocabulary</span>
+                <span class="subscore-val" id="scoreVocabVal">--</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressVocab" style="width: 0%; background: var(--color-vocabulary);"></div>
+              </div>
+            </div>
+
+            <!-- Readability -->
+            <div class="subscore-item">
+              <div class="subscore-header">
+                <span class="subscore-name"><span style="color: #38bdf8;">●</span> Readability</span>
+                <span class="subscore-val" id="scoreReadabilityVal">--</span>
+              </div>
+              <div class="progress-track">
+                <div class="progress-fill" id="progressReadability" style="width: 0%; background: #38bdf8;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Issues Feed with Filter Tabs -->
+          <div class="issues-feed-card">
+            <div class="feed-header">
+              <h4><span>🔍</span> Detected Improvements</h4>
+              <span class="issues-count-badge" id="issuesCountBadge">0 Issues</span>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="category-filter-pills" id="categoryFilterContainer">
+              <button class="cat-filter-btn active" data-cat="all">All</button>
+              <button class="cat-filter-btn" data-cat="grammar">Grammar</button>
+              <button class="cat-filter-btn" data-cat="spelling">Spelling</button>
+              <button class="cat-filter-btn" data-cat="punctuation">Punctuation</button>
+              <button class="cat-filter-btn" data-cat="clarity">Clarity</button>
+              <button class="cat-filter-btn" data-cat="structure">Structure</button>
+              <button class="cat-filter-btn" data-cat="vocabulary">Vocabulary</button>
+            </div>
+
+            <!-- Scrollable Issues Cards -->
+            <div class="issues-list" id="issuesList">
+              <div class="empty-issues-placeholder">
+                <span>✨</span>
+                <p>No issues detected yet. Enter text and click <strong>Analyze Writing</strong> or load a sample document!</p>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Tab 2: Before vs After Side-by-Side Comparison
+         ==================================================================== -->
+    <section class="tab-pane" id="tabDiff">
+      <div class="comparison-view">
+        
+        <!-- Score Delta Banner -->
+        <div class="comparison-metric-banner">
+          <div class="banner-stat">
+            <div class="banner-icon">📈</div>
+            <div class="banner-content">
+              <span>Overall Score Impact</span>
+              <strong><span id="diffBeforeScore">--</span> ➔ <span id="diffAfterScore" style="color: #34d399;">--</span></strong>
+            </div>
+          </div>
+          <div class="banner-stat">
+            <div class="banner-icon">🎯</div>
+            <div class="banner-content">
+              <span>Issues Resolved</span>
+              <strong><span id="diffResolvedCount">--</span> Fixed</strong>
+            </div>
+          </div>
+          <div class="banner-stat">
+            <div class="banner-icon">📖</div>
+            <div class="banner-content">
+              <span>Readability Ease</span>
+              <strong id="diffReadingEase">--</strong>
+            </div>
+          </div>
+          <div class="banner-actions">
+            <button class="btn btn-accent btn-sm" id="btnCopyCorrected">
+              <span>📋</span> Copy Corrected
+            </button>
+            <button class="btn btn-primary btn-sm" id="btnApplyCorrectedToEditor">
+              <span>✍️</span> Use in Editor
+            </button>
+          </div>
+        </div>
+
+        <!-- Side-by-Side Grid -->
+        <div class="comparison-grid">
+          
+          <!-- Original Panel -->
+          <div class="comparison-panel">
+            <div class="panel-title-bar">
+              <h3>Original Draft</h3>
+              <span class="panel-badge badge-before" id="panelBadgeBefore">Errors: 0</span>
+            </div>
+            <div class="comparison-text-box" id="diffOriginalText"></div>
+          </div>
+
+          <!-- Corrected Panel -->
+          <div class="comparison-panel">
+            <div class="panel-title-bar">
+              <h3>Corrected & Polished Version</h3>
+              <span class="panel-badge badge-after" id="panelBadgeAfter">Quality: 100</span>
+            </div>
+            <div class="comparison-text-box" id="diffCorrectedText"></div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Tab 3: Explain My Error Feature & Learning Center
+         ==================================================================== -->
+    <section class="tab-pane" id="tabExplain">
+      <div class="explain-center-view">
+        
+        <div class="explain-header-card">
+          <div>
+            <h2>Explain My Error — Linguistic Pedagogical Center</h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">
+              Syntaxa AI doesn't just replace text. It teaches the underlying grammatical rule, why the original phrase is flawed, and how to improve.
+            </p>
+          </div>
+          <button class="btn btn-secondary btn-sm" id="btnPrintLearningGuide">
+            <span>🖨️</span> Print Guide
+          </button>
+        </div>
+
+        <!-- Educational Cards Grid -->
+        <div class="explain-cards-grid" id="explainCardsGrid">
+          <div class="empty-issues-placeholder" style="grid-column: 1 / -1;">
+            <span>🎓</span>
+            <p>No errors to explain. Run an analysis on a document to see comprehensive learning cards.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Tab 4: Detailed Analysis Report
+         ==================================================================== -->
+    <section class="tab-pane" id="tabReport">
+      <div class="report-view">
+        
+        <div class="report-card">
+          <div class="report-header">
+            <div>
+              <h2 id="reportDocTitle">Document Linguistic Audit Report</h2>
+              <p style="color: var(--text-muted); font-size: 0.85rem;" id="reportTimestamp">Generated: --</p>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="window.print()">
+              <span>🖨️</span> Print / Save PDF
+            </button>
+          </div>
+
+          <!-- 3-Column Metrics -->
+          <div class="report-grid-3">
+            <div class="report-stat-card">
+              <h4>Volume & Scale</h4>
+              <div class="stat-num" id="reportWords">0</div>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">
+                <span id="reportSentences">0</span> sentences in <span id="reportParagraphs">0</span> paragraphs across <span id="reportSections">0</span> section(s).
+              </p>
+            </div>
+
+            <div class="report-stat-card">
+              <h4>Readability Grade</h4>
+              <div class="stat-num" id="reportGrade">--</div>
+              <p style="font-size: 0.8rem; color: var(--text-muted);" id="reportAudience">Target Audience</p>
+            </div>
+
+            <div class="report-stat-card">
+              <h4>Lexical Diversity</h4>
+              <div class="stat-num" id="reportTTR">--</div>
+              <p style="font-size: 0.8rem; color: var(--text-muted);">Type-Token Ratio (higher means richer vocabulary)</p>
+            </div>
+          </div>
+
+          <!-- Categorical Error Distribution Table -->
+          <h3 style="font-family: var(--font-heading); margin-bottom: 0.75rem;">Error Category Breakdown</h3>
+          <table class="report-table">
+            <thead>
+              <tr>
+                <th>Category</th>
+                <th>Issues Detected</th>
+                <th>Sub-score</th>
+                <th>Benchmark Status</th>
+              </tr>
+            </thead>
+            <tbody id="reportCategoriesTable">
+              <tr><td colspan="4" style="text-align: center; color: var(--text-muted);">Run analysis to populate data.</td></tr>
+            </tbody>
+          </table>
+
+          <!-- Sentence Structure & Vocabulary Deep-Dive -->
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 2rem;">
+            <div class="report-stat-card">
+              <h4>Sentence Structure & Passive Voice</h4>
+              <p style="font-size: 0.88rem; margin-top: 0.4rem;">
+                Passive Constructions: <strong id="reportPassiveCount">0</strong> (<span id="reportPassivePct">0%</span> of document)
+              </p>
+              <p style="font-size: 0.88rem;">
+                Average Sentence Length: <strong id="reportAvgSentLen">0</strong> words
+              </p>
+              <p style="font-size: 0.88rem;">
+                Longest Sentence: <strong id="reportLongestSent">0</strong> words
+              </p>
+            </div>
+
+            <div class="report-stat-card">
+              <h4>Overused Words & High Repetition</h4>
+              <div id="reportRepeatedWordsList" style="font-size: 0.88rem; margin-top: 0.4rem;">
+                None detected.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====================================================================
+         Tab 5: Personalized Writing Profile & Progress
+         ==================================================================== -->
+    <section class="tab-pane" id="tabProfile">
+      <div class="profile-view">
+        
+        <div class="profile-overview-card">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div>
+              <h2 style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800;">Your Writing Profile</h2>
+              <p style="color: var(--text-muted); font-size: 0.9rem;">
+                Tracks recurring patterns, diagnoses persistent weaknesses, and measures score improvements over time.
+              </p>
+            </div>
+            <button class="btn btn-secondary btn-sm" id="btnClearHistory">
+              <span>🗑️</span> Reset History
+            </button>
+          </div>
+
+          <!-- Summary Stats -->
+          <div class="profile-stats-row">
+            <div class="profile-stat-box">
+              <span>Total Documents</span>
+              <strong id="profTotalDocs">0</strong>
+            </div>
+            <div class="profile-stat-box">
+              <span>Total Words</span>
+              <strong id="profTotalWords">0</strong>
+            </div>
+            <div class="profile-stat-box">
+              <span>Average Score</span>
+              <strong id="profAvgScore">--</strong>
+            </div>
+            <div class="profile-stat-box">
+              <span>Avg. Score Gain</span>
+              <strong id="profAvgGain" style="color: #34d399;">+0</strong>
+            </div>
+          </div>
+
+          <!-- Weakness Diagnosis Recommendation -->
+          <div class="learning-tip-box" id="profRecommendationBox" style="font-size: 0.9rem; padding: 1rem;">
+            Analyze your writing to generate customized diagnostic insights.
+          </div>
+        </div>
+
+        <!-- Most Common Issues Breakdown -->
+        <div class="common-issues-card">
+          <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700;">
+            Most Frequent Linguistic Issues
+          </h3>
+          <div class="common-issues-list" id="commonIssuesList">
+            <p style="color: var(--text-muted); font-size: 0.88rem;">No historical records yet.</p>
+          </div>
+        </div>
+
+        <!-- Score Progression Timeline Chart -->
+        <div class="timeline-card">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-family: var(--font-heading); font-size: 1.25rem; font-weight: 700;">
+              Score Improvement Timeline
+            </h3>
+            <div style="display: flex; align-items: center; gap: 1rem; font-size: 0.8rem; color: var(--text-muted);">
+              <span><span style="color: #f43f5e;">■</span> Before</span>
+              <span><span style="color: #10b981;">■</span> After Correction</span>
+            </div>
+          </div>
+          
+          <div class="timeline-bars-chart" id="timelineChart">
+            <p style="color: var(--text-muted); font-size: 0.88rem; margin: auto;">Run analyses on multiple documents to generate your progress timeline.</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Interactive Popover for In-Text Error Clicks -->
+  <div class="issue-popover" id="errorPopover">
+    <div class="popover-header">
+      <span class="popover-badge" id="popoverBadge">Grammar</span>
+      <button class="btn btn-secondary btn-sm" id="btnDismissPopover" style="padding: 1px 6px; font-size: 0.75rem;">✕</button>
+    </div>
+    <div class="popover-diff">
+      <span class="token-orig" id="popoverOrig"></span>
+      <span class="token-arrow">➔</span>
+      <span class="token-repl" id="popoverRepl"></span>
+    </div>
+    <div class="popover-explanation" id="popoverExpl"></div>
+    <div class="popover-actions">
+      <button class="btn btn-secondary btn-sm" id="btnPopoverExplain">
+        <span>🎓</span> Explain
+      </button>
+      <button class="btn btn-accent btn-sm" id="btnPopoverAccept">
+        <span>✓</span> Accept Correction
+      </button>
+    </div>
+  </div>
+
+  <!-- Toast Notification -->
+  <div class="toast-msg" id="toastMsg">
+    <span id="toastIcon">✓</span>
+    <span id="toastText">Action completed</span>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

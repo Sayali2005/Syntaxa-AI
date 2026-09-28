@@ -1,0 +1,12 @@
+Machine Learning Assignment: NLP Writing Analysis
+
+1. Introduction
+Yesterday I go to college. The algorithm were successful in processing the raw data. Many student was interested in the topic. She go to college every day to study deep learning.
+
+2. System Architecture
+The project was developed by us and it was tested by us and it was deployed by us. Due to the fact that the system was not functioning properly, the project implementation was delayed. He is good in mathematics and computer science.
+
+3. Results and Discussion
+I recieved the assignment using Python, TensorFlow, PostgreSQL, and OpenAI. I bought book on neural networks to understand the concept. Hello how are you
+
+This is a good method. It gives good performance and good accuracy for good models. Each student should submit their assignment on time.
