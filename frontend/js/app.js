@@ -13,9 +13,16 @@ const state = {
 
 // DOM Elements Cache
 const elements = {
-  // Navigation
+  // Navigation & Drawer
   navTabs: document.querySelectorAll('.nav-tab-btn'),
   tabPanes: document.querySelectorAll('.tab-pane'),
+  btnHamburger: document.getElementById('btnHamburger'),
+  btnDrawerClose: document.getElementById('btnDrawerClose'),
+  navBackdrop: document.getElementById('navBackdrop'),
+  mobileDrawer: document.getElementById('mobileDrawer'),
+  writingModeSelectDrawer: document.getElementById('writingModeSelectDrawer'),
+  btnLoadSampleMobile: document.getElementById('btnLoadSampleMobile'),
+  btnTriggerUploadMobile: document.getElementById('btnTriggerUploadMobile'),
 
   // Header Controls
   writingModeSelect: document.getElementById('writingModeSelect'),
@@ -32,9 +39,15 @@ const elements = {
   langName: document.getElementById('langName'),
   langConfidence: document.getElementById('langConfidence'),
   editorWrapper: document.getElementById('editorWrapper'),
+  editorContent: document.getElementById('editorContent'),
   editorTextarea: document.getElementById('editorTextarea'),
-  editorHighlights: document.getElementById('editorHighlights'),
+  btnViewReview: document.getElementById('btnViewReview'),
+  btnViewPlain: document.getElementById('btnViewPlain'),
+  reviewCountBadge: document.getElementById('reviewCountBadge'),
+  mobileReviewPill: document.getElementById('mobileReviewPill'),
+  mobilePillCount: document.getElementById('mobilePillCount'),
   btnApplyAllEditor: document.getElementById('btnApplyAllEditor'),
+  btnApplyAllSidebar: document.getElementById('btnApplyAllSidebar'),
   btnClearEditor: document.getElementById('btnClearEditor'),
   btnExport: document.getElementById('btnExport'),
   fileDropZone: document.getElementById('fileDropZone'),
@@ -70,9 +83,11 @@ const elements = {
   categoryFilterContainer: document.getElementById('categoryFilterContainer'),
   issuesList: document.getElementById('issuesList'),
 
-  // Popover
+  // Popover & Mobile Bottom Sheet
+  popoverBackdrop: document.getElementById('popoverBackdrop'),
   errorPopover: document.getElementById('errorPopover'),
   popoverBadge: document.getElementById('popoverBadge'),
+  popoverStatusTag: document.getElementById('popoverStatusTag'),
   popoverOrig: document.getElementById('popoverOrig'),
   popoverRepl: document.getElementById('popoverRepl'),
   popoverExpl: document.getElementById('popoverExpl'),
@@ -155,41 +170,219 @@ document.addEventListener('DOMContentLoaded', () => {
   loadWritingProfile();
 });
 
-// Navigation Tabs
+// Navigation Tabs & Mobile Drawer
 function initNavTabs() {
-  elements.navTabs.forEach(tab => {
+  const drawer = document.getElementById('mobileDrawer');
+  const backdrop = document.getElementById('navBackdrop');
+  const btnHamburger = document.getElementById('btnHamburger');
+  const btnClose = document.getElementById('btnDrawerClose');
+
+  function openMobileNav() {
+    if (drawer) {
+      drawer.classList.add('open');
+      drawer.setAttribute('aria-hidden', 'false');
+    }
+    if (backdrop) backdrop.classList.add('visible');
+    if (btnHamburger) {
+      btnHamburger.classList.add('open');
+      btnHamburger.setAttribute('aria-expanded', 'true');
+    }
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeMobileNav() {
+    if (drawer) {
+      drawer.classList.remove('open');
+      drawer.setAttribute('aria-hidden', 'true');
+    }
+    if (backdrop) backdrop.classList.remove('visible');
+    if (btnHamburger) {
+      btnHamburger.classList.remove('open');
+      btnHamburger.setAttribute('aria-expanded', 'false');
+    }
+    document.body.style.overflow = '';
+  }
+
+  function toggleMobileNav() {
+    if (drawer && drawer.classList.contains('open')) {
+      closeMobileNav();
+    } else {
+      openMobileNav();
+    }
+  }
+
+  if (btnHamburger) {
+    btnHamburger.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMobileNav();
+    });
+  }
+
+  if (btnClose) {
+    btnClose.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMobileNav();
+    });
+  }
+
+  if (backdrop) {
+    backdrop.addEventListener('click', (e) => {
+      e.stopPropagation();
+      closeMobileNav();
+    });
+  }
+
+  // Handle all nav tab buttons across desktop and mobile
+  document.querySelectorAll('.nav-tab-btn').forEach(tab => {
     tab.addEventListener('click', () => {
       const targetId = tab.dataset.target;
-      elements.navTabs.forEach(t => t.classList.remove('active'));
-      elements.tabPanes.forEach(p => p.classList.remove('active'));
+      if (!targetId) return;
 
-      tab.classList.add('active');
+      // Sync active state on all buttons targeting this tab
+      document.querySelectorAll('.nav-tab-btn').forEach(t => {
+        if (t.dataset.target === targetId) {
+          t.classList.add('active');
+          t.setAttribute('aria-selected', 'true');
+        } else {
+          t.classList.remove('active');
+          t.setAttribute('aria-selected', 'false');
+        }
+      });
+
+      // Show target tab pane
+      elements.tabPanes.forEach(p => p.classList.remove('active'));
       const targetPane = document.getElementById(targetId);
       if (targetPane) targetPane.classList.add('active');
 
       if (targetId === 'tabProfile') {
         loadWritingProfile();
       }
+
+      // Close mobile drawer when a tab is selected
+      closeMobileNav();
     });
   });
+
+  // Mobile Drawer Writing Mode Sync
+  const modeDrawer = document.getElementById('writingModeSelectDrawer');
+  if (modeDrawer && elements.writingModeSelect) {
+    modeDrawer.value = state.selectedMode || elements.writingModeSelect.value;
+    modeDrawer.addEventListener('change', (e) => {
+      elements.writingModeSelect.value = e.target.value;
+      state.selectedMode = e.target.value;
+      showToast(`Mode: ${e.target.options[e.target.selectedIndex].text}`, "⚡");
+      closeMobileNav();
+      if (getEditorPlainText().trim().length > 0) {
+        analyzeDocument();
+      }
+    });
+
+    elements.writingModeSelect.addEventListener('change', (e) => {
+      if (modeDrawer) modeDrawer.value = e.target.value;
+    });
+  }
+
+  // Mobile Drawer Quick Actions
+  const sampleMobile = document.getElementById('btnLoadSampleMobile');
+  if (sampleMobile && elements.btnLoadSample) {
+    sampleMobile.addEventListener('click', () => {
+      closeMobileNav();
+      elements.btnLoadSample.click();
+    });
+  }
+
+  const uploadMobile = document.getElementById('btnTriggerUploadMobile');
+  if (uploadMobile && elements.btnTriggerUpload) {
+    uploadMobile.addEventListener('click', () => {
+      closeMobileNav();
+      elements.btnTriggerUpload.click();
+    });
+  }
+}
+
+// Helper to get plaintext from either visual or raw editor
+function getEditorPlainText() {
+  if (elements.editorTextarea && elements.editorTextarea.style.display !== 'none') {
+    return elements.editorTextarea.value;
+  }
+  if (elements.editorContent) {
+    return (elements.editorContent.innerText !== undefined 
+      ? elements.editorContent.innerText 
+      : elements.editorContent.textContent).replace(/\r\n/g, '\n');
+  }
+  return elements.editorTextarea ? elements.editorTextarea.value : '';
+}
+
+function setEditorText(text) {
+  if (elements.editorTextarea) elements.editorTextarea.value = text;
+  if (elements.editorContent) elements.editorContent.textContent = text;
+  updateLiveTextMetrics();
+}
+
+function switchEditorView(mode) {
+  if (mode === 'plain') {
+    elements.editorTextarea.value = getEditorPlainText();
+    elements.editorContent.style.display = 'none';
+    elements.editorTextarea.style.display = 'block';
+    if (elements.btnViewPlain) elements.btnViewPlain.classList.add('active');
+    if (elements.btnViewReview) elements.btnViewReview.classList.remove('active');
+    elements.editorTextarea.focus();
+  } else {
+    // Review mode
+    elements.editorTextarea.style.display = 'none';
+    elements.editorContent.style.display = 'block';
+    if (elements.btnViewReview) elements.btnViewReview.classList.add('active');
+    if (elements.btnViewPlain) elements.btnViewPlain.classList.remove('active');
+    if (state.currentAnalysis) {
+      renderInTextHighlights(state.currentAnalysis.original_text, state.currentAnalysis.issues);
+    } else {
+      elements.editorContent.textContent = elements.editorTextarea.value;
+    }
+  }
 }
 
 // Editor Events
 function initEditorEvents() {
-  elements.editorTextarea.addEventListener('input', () => {
+  // Visual rich editor input
+  elements.editorContent.addEventListener('input', () => {
+    elements.editorTextarea.value = getEditorPlainText();
     updateLiveTextMetrics();
     hidePopover();
-    // Clear highlights when typing until re-analyzed
-    if (state.currentAnalysis) {
-      elements.editorHighlights.innerHTML = '';
-    }
   });
 
-  // Synchronize scrolling between textarea and highlight layer
-  elements.editorTextarea.addEventListener('scroll', () => {
-    elements.editorHighlights.scrollTop = elements.editorTextarea.scrollTop;
-    elements.editorHighlights.scrollLeft = elements.editorTextarea.scrollLeft;
+  // Plaintext paste sanitizer
+  elements.editorContent.addEventListener('paste', (e) => {
+    e.preventDefault();
+    const text = (e.clipboardData || window.clipboardData).getData('text');
+    document.execCommand('insertText', false, text);
+    elements.editorTextarea.value = getEditorPlainText();
+    updateLiveTextMetrics();
   });
+
+  // Raw textarea input
+  elements.editorTextarea.addEventListener('input', () => {
+    if (elements.editorContent) elements.editorContent.textContent = elements.editorTextarea.value;
+    updateLiveTextMetrics();
+    hidePopover();
+  });
+
+  // Mode toggle buttons
+  if (elements.btnViewReview) {
+    elements.btnViewReview.addEventListener('click', () => switchEditorView('review'));
+  }
+  if (elements.btnViewPlain) {
+    elements.btnViewPlain.addEventListener('click', () => switchEditorView('plain'));
+  }
+
+  // Mobile jump pill
+  if (elements.mobileReviewPill) {
+    elements.mobileReviewPill.addEventListener('click', () => {
+      const feed = document.querySelector('.issues-feed-card');
+      if (feed) {
+        feed.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  }
 
   // Drag and drop support
   const dropZone = elements.fileDropZone;
@@ -223,8 +416,7 @@ function initEditorEvents() {
 function initHeaderActions() {
   elements.btnLoadSample.addEventListener('click', () => {
     elements.docTitleInput.value = "Machine Learning Assignment: NLP Writing Analysis";
-    elements.editorTextarea.value = SAMPLE_TEXT;
-    updateLiveTextMetrics();
+    setEditorText(SAMPLE_TEXT);
     showToast("Sample assignment loaded. Click 'Analyze Writing'!", "📝");
     analyzeDocument();
   });
@@ -245,38 +437,43 @@ function initHeaderActions() {
 
   elements.writingModeSelect.addEventListener('change', (e) => {
     state.selectedMode = e.target.value;
-    if (elements.editorTextarea.value.trim().length > 0) {
+    if (getEditorPlainText().trim().length > 0) {
       analyzeDocument();
     }
   });
 
   elements.btnClearEditor.addEventListener('click', () => {
-    elements.editorTextarea.value = '';
-    elements.editorHighlights.innerHTML = '';
+    setEditorText('');
     state.currentAnalysis = null;
-    updateLiveTextMetrics();
+    if (elements.reviewCountBadge) elements.reviewCountBadge.textContent = '0';
+    if (elements.mobileReviewPill) elements.mobileReviewPill.style.display = 'none';
     resetDashboard();
     hidePopover();
     showToast("Editor cleared.", "🗑️");
   });
 
-  elements.btnApplyAllEditor.addEventListener('click', () => {
+  function applyAllImprovements() {
     if (state.currentAnalysis && state.currentAnalysis.corrected_text) {
-      elements.editorTextarea.value = state.currentAnalysis.corrected_text;
-      updateLiveTextMetrics();
+      setEditorText(state.currentAnalysis.corrected_text);
       showToast("All improvements applied successfully!", "✓");
       analyzeDocument();
     } else {
       showToast("No analysis available. Click Analyze first.", "⚠️");
     }
-  });
+  }
+
+  if (elements.btnApplyAllEditor) {
+    elements.btnApplyAllEditor.addEventListener('click', applyAllImprovements);
+  }
+  if (elements.btnApplyAllSidebar) {
+    elements.btnApplyAllSidebar.addEventListener('click', applyAllImprovements);
+  }
 
   elements.btnExport.addEventListener('click', exportDocument);
   elements.btnCopyCorrected.addEventListener('click', copyCorrectedText);
   elements.btnApplyCorrectedToEditor.addEventListener('click', () => {
     if (state.currentAnalysis && state.currentAnalysis.corrected_text) {
-      elements.editorTextarea.value = state.currentAnalysis.corrected_text;
-      updateLiveTextMetrics();
+      setEditorText(state.currentAnalysis.corrected_text);
       // Switch back to editor tab
       document.getElementById('tabBtnEditor').click();
       showToast("Corrected text copied into editor!", "✍️");
@@ -301,6 +498,10 @@ function initHeaderActions() {
 function initPopoverEvents() {
   elements.btnDismissPopover.addEventListener('click', hidePopover);
 
+  if (elements.popoverBackdrop) {
+    elements.popoverBackdrop.addEventListener('click', hidePopover);
+  }
+
   elements.btnPopoverAccept.addEventListener('click', () => {
     if (state.activePopoverIssue) {
       applySingleIssueCorrection(state.activePopoverIssue);
@@ -321,9 +522,15 @@ function initPopoverEvents() {
     }
   });
 
-  // Close popover when clicking outside
+  // Close popover when clicking outside (desktop)
   document.addEventListener('click', (e) => {
-    if (!elements.errorPopover.contains(e.target) && !e.target.classList.contains('err-mark')) {
+    if (
+      elements.errorPopover &&
+      !elements.errorPopover.contains(e.target) &&
+      !e.target.closest('.err-mark') &&
+      !e.target.closest('.issue-card') &&
+      !e.target.closest('#mobileReviewPill')
+    ) {
       hidePopover();
     }
   });
@@ -334,7 +541,7 @@ function initPopoverEvents() {
 // ==========================================================================
 
 async function analyzeDocument() {
-  const text = elements.editorTextarea.value.trim();
+  const text = getEditorPlainText().trim();
   if (!text) {
     showToast("Please enter or paste text to analyze.", "⚠️");
     return;
@@ -347,7 +554,7 @@ async function analyzeDocument() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        text: elements.editorTextarea.value,
+        text: getEditorPlainText(),
         mode: state.selectedMode,
         document_name: elements.docTitleInput.value.trim() || "Untitled Document"
       })
@@ -395,10 +602,9 @@ async function handleFileUpload(file) {
     const data = await response.json();
     state.currentAnalysis = data;
 
-    // Put extracted text into textarea
+    // Put extracted text into editor
     elements.docTitleInput.value = data.document_name;
-    elements.editorTextarea.value = data.original_text;
-    updateLiveTextMetrics();
+    setEditorText(data.original_text);
 
     renderAnalysisResults(data);
     showToast(`File extracted and analyzed successfully!`, "📄");
@@ -487,11 +693,46 @@ function updateSubscores(scores) {
   elements.progressReadability.style.width = `${scores.readability}%`;
 }
 
-// In-Text Highlighting
+// In-Text Highlighting with Red Text, Wavy Underline, and Sentence Context
 function renderInTextHighlights(rawText, issues) {
+  // Ensure visual review mode is displayed
+  if (elements.editorTextarea) elements.editorTextarea.style.display = 'none';
+  if (elements.editorContent) elements.editorContent.style.display = 'block';
+  if (elements.btnViewReview) elements.btnViewReview.classList.add('active');
+  if (elements.btnViewPlain) elements.btnViewPlain.classList.remove('active');
+
+  const count = issues ? issues.length : 0;
+  if (elements.reviewCountBadge) elements.reviewCountBadge.textContent = count;
+  if (elements.mobilePillCount) elements.mobilePillCount.textContent = count;
+  if (elements.mobileReviewPill) {
+    elements.mobileReviewPill.style.display = count > 0 ? 'flex' : 'none';
+  }
+
+  if (!elements.editorContent) return;
+
   if (!issues || issues.length === 0) {
-    elements.editorHighlights.innerHTML = escapeHtml(rawText);
+    elements.editorContent.textContent = rawText;
     return;
+  }
+
+  // Find sentences and wrap issues with bold red text and red wavy underline
+  // First, find all sentence boundaries in rawText to add sentence context highlighting
+  const sentenceRanges = [];
+  const sentenceRegex = /[^.!?\n]+(?:[.!?]+|\n+|$)/g;
+  let match;
+  while ((match = sentenceRegex.exec(rawText)) !== null) {
+    if (match[0].trim().length > 0) {
+      sentenceRanges.push({
+        start: match.index,
+        end: match.index + match[0].length,
+        hasError: false
+      });
+    }
+  }
+
+  // Mark sentences that contain at least one error
+  for (const s of sentenceRanges) {
+    s.hasError = issues.some(i => i.start_idx >= s.start && i.start_idx < s.end);
   }
 
   // Sort issues ascending by start_idx
@@ -499,33 +740,64 @@ function renderInTextHighlights(rawText, issues) {
   let html = '';
   let cursor = 0;
 
-  for (const issue of sorted) {
-    if (issue.start_idx < cursor) continue; // Skip overlaps
-
-    // Append text leading up to this issue
-    if (issue.start_idx > cursor) {
-      html += escapeHtml(rawText.substring(cursor, issue.start_idx));
+  for (const sent of sentenceRanges) {
+    // Text before sentence
+    if (sent.start > cursor) {
+      html += escapeHtml(rawText.substring(cursor, sent.start));
+      cursor = sent.start;
     }
 
-    const spanText = rawText.substring(issue.start_idx, issue.end_idx);
-    const catClass = `cat-${issue.category}`;
-    html += `<span class="err-mark ${catClass}" data-issue-id="${issue.id}">${escapeHtml(spanText || ' ')}</span>`;
-    cursor = issue.end_idx;
+    const sentIssues = sorted.filter(i => i.start_idx >= sent.start && i.end_idx <= sent.end);
+    let sentHtml = '';
+    let sentCursor = sent.start;
+
+    for (const issue of sentIssues) {
+      if (issue.start_idx < sentCursor) continue;
+
+      if (issue.start_idx > sentCursor) {
+        sentHtml += escapeHtml(rawText.substring(sentCursor, issue.start_idx));
+      }
+
+      const spanText = rawText.substring(issue.start_idx, issue.end_idx);
+      const catClass = `cat-${issue.category}`;
+      sentHtml += `<span class="err-mark ${catClass}" data-issue-id="${issue.id}" title="Error: ${escapeHtml(issue.error_type)} — Tap to fix" tabindex="0">${escapeHtml(spanText || ' ')}</span>`;
+      sentCursor = issue.end_idx;
+    }
+
+    if (sentCursor < sent.end) {
+      sentHtml += escapeHtml(rawText.substring(sentCursor, sent.end));
+    }
+
+    if (sent.hasError) {
+      html += `<span class="sentence-with-error">${sentHtml}</span>`;
+    } else {
+      html += sentHtml;
+    }
+
+    cursor = sent.end;
   }
 
   if (cursor < rawText.length) {
     html += escapeHtml(rawText.substring(cursor));
   }
 
-  elements.editorHighlights.innerHTML = html;
+  elements.editorContent.innerHTML = html;
 
-  // Attach click listeners to all marks
-  elements.editorHighlights.querySelectorAll('.err-mark').forEach(mark => {
-    mark.addEventListener('click', (e) => {
+  // Attach click and keyboard listeners to all error marks
+  elements.editorContent.querySelectorAll('.err-mark').forEach(mark => {
+    const handleTrigger = (e) => {
+      e.preventDefault();
+      e.stopPropagation();
       const issueId = mark.dataset.issueId;
       const issue = issues.find(i => i.id === issueId);
       if (issue) {
         showPopover(issue, mark);
+      }
+    };
+    mark.addEventListener('click', handleTrigger);
+    mark.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        handleTrigger(e);
       }
     });
   });
@@ -609,7 +881,7 @@ function filterIssuesFeed() {
     card.addEventListener('click', () => {
       const issue = state.currentAnalysis.issues.find(i => i.id === card.dataset.id);
       if (issue) {
-        const mark = elements.editorHighlights.querySelector(`[data-issue-id="${issue.id}"]`);
+        const mark = elements.editorContent ? elements.editorContent.querySelector(`[data-issue-id="${issue.id}"]`) : null;
         if (mark) {
           showPopover(issue, mark);
           mark.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -625,44 +897,70 @@ function showPopover(issue, targetElement) {
   const popover = elements.errorPopover;
   const catBg = getCategoryColor(issue.category);
 
-  elements.popoverBadge.textContent = `${issue.category} • ${issue.error_type}`;
+  if (elements.editorContent) {
+    elements.editorContent.querySelectorAll('.err-mark').forEach(m => m.classList.remove('active-mark'));
+  }
+  targetElement.classList.add('active-mark');
+
+  elements.popoverBadge.textContent = `${issue.category.toUpperCase()} • ${issue.error_type}`;
   elements.popoverBadge.style.background = catBg.bg;
   elements.popoverBadge.style.color = catBg.fg;
+
+  if (elements.popoverStatusTag) {
+    elements.popoverStatusTag.textContent = issue.severity ? `${issue.severity.toUpperCase()}` : "Fix Suggested";
+  }
 
   elements.popoverOrig.textContent = issue.original_text || '[missing]';
   elements.popoverRepl.textContent = issue.replacement;
   elements.popoverExpl.textContent = issue.rule_explanation;
 
-  // Positioning
-  const rect = targetElement.getBoundingClientRect();
-  const wrapperRect = elements.editorWrapper.getBoundingClientRect();
+  const isMobile = window.innerWidth <= 768;
+  if (isMobile) {
+    popover.style.top = '';
+    popover.style.left = '';
+    if (elements.popoverBackdrop) elements.popoverBackdrop.classList.add('visible');
+    popover.classList.add('visible');
+  } else {
+    if (elements.popoverBackdrop) elements.popoverBackdrop.classList.remove('visible');
+    const rect = targetElement.getBoundingClientRect();
+    const wrapperRect = elements.editorWrapper.getBoundingClientRect();
+    const popWidth = Math.min(360, window.innerWidth - 30);
 
-  const topPos = rect.bottom - wrapperRect.top + elements.editorTextarea.scrollTop + 8;
-  const leftPos = Math.min(
-    Math.max(10, rect.left - wrapperRect.left),
-    elements.editorWrapper.clientWidth - 350
-  );
+    let leftPos = rect.left - wrapperRect.left;
+    if (leftPos + popWidth > wrapperRect.width - 20) {
+      leftPos = Math.max(10, wrapperRect.width - popWidth - 20);
+    }
+    leftPos = Math.max(10, leftPos);
 
-  popover.style.top = `${topPos}px`;
-  popover.style.left = `${leftPos}px`;
-  popover.classList.add('visible');
+    let topPos = rect.bottom - wrapperRect.top + elements.editorContent.scrollTop + 8;
+    if (topPos + 220 > elements.editorWrapper.clientHeight && rect.top - wrapperRect.top > 200) {
+      topPos = rect.top - wrapperRect.top - 200;
+    }
+
+    popover.style.top = `${Math.max(10, topPos)}px`;
+    popover.style.left = `${leftPos}px`;
+    popover.classList.add('visible');
+  }
 }
 
 function hidePopover() {
-  elements.errorPopover.classList.remove('visible');
+  if (elements.errorPopover) elements.errorPopover.classList.remove('visible');
+  if (elements.popoverBackdrop) elements.popoverBackdrop.classList.remove('visible');
+  if (elements.editorContent) {
+    elements.editorContent.querySelectorAll('.err-mark').forEach(m => m.classList.remove('active-mark'));
+  }
   state.activePopoverIssue = null;
 }
 
 // Single Issue Application
 function applySingleIssueCorrection(issue) {
-  const currentText = elements.editorTextarea.value;
+  const currentText = getEditorPlainText();
   const start = issue.start_idx;
   const end = issue.end_idx;
 
   if (start >= 0 && end <= currentText.length) {
     const updated = currentText.substring(0, start) + issue.replacement + currentText.substring(end);
-    elements.editorTextarea.value = updated;
-    updateLiveTextMetrics();
+    setEditorText(updated);
     showToast(`Applied: "${issue.replacement}"`, "✓");
     analyzeDocument();
   }
@@ -947,7 +1245,7 @@ async function clearUserHistory() {
 // ==========================================================================
 
 function updateLiveTextMetrics() {
-  const text = elements.editorTextarea.value;
+  const text = getEditorPlainText();
   const words = text.trim() ? text.trim().split(/\s+/).length : 0;
   const chars = text.length;
   const sents = text.trim() ? (text.match(/[.!?]+(?=\s+|$)/g) || []).length : 0;
@@ -1005,7 +1303,7 @@ function getCategoryColor(cat) {
 }
 
 function exportDocument() {
-  const text = elements.editorTextarea.value;
+  const text = getEditorPlainText();
   if (!text.trim()) {
     showToast("Editor is empty. Nothing to export.", "⚠️");
     return;

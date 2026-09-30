@@ -1,0 +1,28 @@
+# Bytecode & Caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Databases & Runtime Data
+*.db
+*.sqlite
+*.sqlite3
+data/*.db
+!data/.gitkeep
+
+# Environment & IDE
+.env
+.venv/
+venv/
+ENV/
+.vscode/
+.idea/
+
+# OS specific files
+.DS_Store
+Thumbs.db
+
+# Report scratch files & test previews (optional)
+template_extracted.txt
+report_assets/previews/

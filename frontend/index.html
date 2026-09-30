@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Syntaxa AI — AI-Powered Context-Aware Writing Intelligence</title>
   <meta name="description" content="Syntaxa AI analyzes grammar, spelling, punctuation, clarity, sentence structure, and vocabulary to evaluate and explain writing improvements.">
-  <link rel="stylesheet" href="/static/css/styles.css">
+  <link rel="stylesheet" href="/static/css/styles.css?v=4.0">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2226%22>✨</text></svg>">
 </head>
 <body>
@@ -14,40 +14,122 @@
   <header class="app-header">
     <div class="header-container">
       
-      <!-- Brand -->
-      <div class="brand-wrapper">
-        <div class="brand-logo-icon">S</div>
-        <div class="brand-text">
-          <h1>Syntaxa AI <span class="brand-badge">Intelligence v1.0</span></h1>
-          <p>Context-Aware Grammar & Linguistic Writing Platform</p>
+      <!-- Top Row: Brand & Main Controls -->
+      <div class="header-main-bar">
+        <!-- Brand -->
+        <div class="brand-wrapper">
+          <div class="brand-logo-icon">S</div>
+          <div class="brand-text">
+            <h1>Syntaxa AI <span class="brand-badge">Intelligence v1.0</span></h1>
+            <p class="brand-subtitle">Context-Aware Grammar & Linguistic Writing Platform</p>
+          </div>
+        </div>
+
+        <!-- Action Controls -->
+        <div class="header-actions">
+          <!-- Mode Selector (Desktop) -->
+          <div class="mode-select-wrapper desktop-header-item" title="Select Writing Mode / Style Transformation">
+            <span class="mode-select-label">Mode:</span>
+            <select id="writingModeSelect" class="mode-select" aria-label="Writing Mode">
+              <option value="grammar_fix">⚡ Grammar Fix (Preserve Style)</option>
+              <option value="professional">💼 Professional (Formal & Clear)</option>
+              <option value="academic">🎓 Academic (Scholarly & Objective)</option>
+              <option value="simple">💡 Simple (Plain Language)</option>
+              <option value="concise">✂️ Concise (Trim Wordiness)</option>
+            </select>
+          </div>
+
+          <!-- Quick Action Buttons (Desktop) -->
+          <button class="btn btn-secondary btn-sm desktop-header-item" id="btnLoadSample" title="Load sample document with all prompt error types">
+            <span>📝</span> <span class="btn-label">Sample</span>
+          </button>
+
+          <!-- Hidden Upload Input -->
+          <input type="file" id="fileUploadInput" accept=".txt,.docx,.pdf,.md" style="display: none;">
+          <button class="btn btn-secondary btn-sm desktop-header-item" id="btnTriggerUpload" title="Upload .txt, .docx, or .pdf assignment">
+            <span>📁</span> <span class="btn-label">Upload</span>
+          </button>
+
+          <!-- Primary Analyze Button (Always Visible) -->
+          <button class="btn btn-primary" id="btnAnalyze" title="Analyze document for grammar and linguistic improvements">
+            <span id="btnAnalyzeIcon">✨</span>
+            <span id="btnAnalyzeText">Analyze Writing</span>
+          </button>
+
+          <!-- Mobile Hamburger Toggle Button -->
+          <button class="hamburger-btn" id="btnHamburger" aria-label="Toggle navigation menu" aria-expanded="false">
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+            <span class="hamburger-bar"></span>
+          </button>
         </div>
       </div>
 
-      <!-- Navigation Tabs -->
-      <nav class="nav-tabs" role="tablist">
-        <button class="nav-tab-btn active" id="tabBtnEditor" data-target="tabEditor">
+      <!-- Desktop Navigation Tabs (Visible on screens > 860px) -->
+      <nav class="nav-tabs desktop-only" role="tablist" aria-label="Main Navigation">
+        <button class="nav-tab-btn active" id="tabBtnEditor" data-target="tabEditor" role="tab" aria-selected="true">
           <span>✍️</span> Editor & Intelligence
         </button>
-        <button class="nav-tab-btn" id="tabBtnDiff" data-target="tabDiff">
+        <button class="nav-tab-btn" id="tabBtnDiff" data-target="tabDiff" role="tab" aria-selected="false">
           <span>⚖️</span> Before vs After
         </button>
-        <button class="nav-tab-btn" id="tabBtnExplain" data-target="tabExplain">
+        <button class="nav-tab-btn" id="tabBtnExplain" data-target="tabExplain" role="tab" aria-selected="false">
           <span>🎓</span> Explain My Error
         </button>
-        <button class="nav-tab-btn" id="tabBtnReport" data-target="tabReport">
+        <button class="nav-tab-btn" id="tabBtnReport" data-target="tabReport" role="tab" aria-selected="false">
           <span>📊</span> Detailed Report
         </button>
-        <button class="nav-tab-btn" id="tabBtnProfile" data-target="tabProfile">
+        <button class="nav-tab-btn" id="tabBtnProfile" data-target="tabProfile" role="tab" aria-selected="false">
           <span>📈</span> Writing Profile
         </button>
       </nav>
 
-      <!-- Action Controls -->
-      <div class="header-actions">
-        <!-- Mode Selector -->
-        <div class="mode-select-wrapper" title="Select Writing Mode / Style Transformation">
-          <span class="mode-select-label">Mode:</span>
-          <select id="writingModeSelect" class="mode-select">
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Backdrop Overlay (Direct child of body, z-index: 1200) -->
+  <div class="mobile-drawer-backdrop" id="navBackdrop"></div>
+
+  <!-- Mobile Navigation Drawer (Direct child of body, z-index: 1250) -->
+  <aside class="mobile-drawer" id="mobileDrawer" aria-label="Mobile Navigation Drawer" aria-hidden="true">
+    <div class="mobile-drawer-inner">
+      <!-- Drawer Header -->
+      <div class="mobile-drawer-header">
+        <div class="mobile-drawer-brand">
+          <div class="brand-logo-icon sm">S</div>
+          <div>
+            <div class="drawer-title">Syntaxa AI</div>
+            <div class="drawer-subtitle">Writing Intelligence Workspace</div>
+          </div>
+        </div>
+        <button class="drawer-close-btn" id="btnDrawerClose" aria-label="Close navigation menu">✕</button>
+      </div>
+
+      <!-- Drawer Nav Links -->
+      <div class="mobile-drawer-nav">
+        <div class="mobile-drawer-section-label">Navigation Views</div>
+        <button class="nav-tab-btn mobile-drawer-btn active" id="mobileTabBtnEditor" data-target="tabEditor">
+          <span>✍️</span> Editor & Intelligence
+        </button>
+        <button class="nav-tab-btn mobile-drawer-btn" id="mobileTabBtnDiff" data-target="tabDiff">
+          <span>⚖️</span> Before vs After
+        </button>
+        <button class="nav-tab-btn mobile-drawer-btn" id="mobileTabBtnExplain" data-target="tabExplain">
+          <span>🎓</span> Explain My Error
+        </button>
+        <button class="nav-tab-btn mobile-drawer-btn" id="mobileTabBtnReport" data-target="tabReport">
+          <span>📊</span> Detailed Report
+        </button>
+        <button class="nav-tab-btn mobile-drawer-btn" id="mobileTabBtnProfile" data-target="tabProfile">
+          <span>📈</span> Writing Profile
+        </button>
+      </div>
+
+      <!-- Drawer Tools & Mode -->
+      <div class="mobile-drawer-tools">
+        <div class="mobile-drawer-section-label">Writing Mode</div>
+        <div class="mobile-drawer-mode-box">
+          <select id="writingModeSelectDrawer" class="drawer-mode-select" aria-label="Writing Mode">
             <option value="grammar_fix">⚡ Grammar Fix (Preserve Style)</option>
             <option value="professional">💼 Professional (Formal & Clear)</option>
             <option value="academic">🎓 Academic (Scholarly & Objective)</option>
@@ -56,26 +138,18 @@
           </select>
         </div>
 
-        <!-- Sample Load Button -->
-        <button class="btn btn-secondary btn-sm" id="btnLoadSample" title="Load sample document with all prompt error types">
-          <span>📝</span> Sample
-        </button>
-
-        <!-- Hidden Upload Input -->
-        <input type="file" id="fileUploadInput" accept=".txt,.docx,.pdf,.md" style="display: none;">
-        <button class="btn btn-secondary btn-sm" id="btnTriggerUpload" title="Upload .txt, .docx, or .pdf assignment">
-          <span>📁</span> Upload
-        </button>
-
-        <!-- Analyze Button -->
-        <button class="btn btn-primary" id="btnAnalyze">
-          <span id="btnAnalyzeIcon">✨</span>
-          <span id="btnAnalyzeText">Analyze Writing</span>
-        </button>
+        <div class="mobile-drawer-section-label">Quick Actions</div>
+        <div class="mobile-drawer-action-btns">
+          <button class="btn btn-secondary btn-sm" id="btnLoadSampleMobile">
+            <span>📝</span> Sample Document
+          </button>
+          <button class="btn btn-secondary btn-sm" id="btnTriggerUploadMobile">
+            <span>📁</span> Upload File
+          </button>
+        </div>
       </div>
-
     </div>
-  </header>
+  </aside>
 
   <!-- Main Viewports -->
   <main class="app-main">
@@ -90,28 +164,58 @@
         <div class="editor-card">
           <div class="editor-header-bar">
             <div class="doc-meta">
-              <input type="text" class="doc-title-input" id="docTitleInput" value="Assignment: Deep Learning & NLP" placeholder="Document Title...">
+              <input type="text" class="doc-title-input" id="docTitleInput" value="Assignment: Deep Learning & NLP" placeholder="Document Title..." aria-label="Document Title">
               <div class="doc-lang-pill" id="langPill">
                 <span>🌐</span> <span id="langName">English</span> (<span id="langConfidence">99%</span>)
               </div>
             </div>
             <div class="editor-quick-actions">
               <button class="btn btn-accent btn-sm" id="btnApplyAllEditor" title="Apply all suggested corrections">
-                <span>✓</span> Accept All
+                <span>✓</span> <span class="btn-label">Accept All</span>
               </button>
               <button class="btn btn-secondary btn-sm" id="btnClearEditor" title="Clear text area">
-                <span>🗑️</span> Clear
+                <span>🗑️</span> <span class="btn-label">Clear</span>
               </button>
               <button class="btn btn-secondary btn-sm" id="btnExport" title="Export document">
-                <span>💾</span> Export
+                <span>💾</span> <span class="btn-label">Export</span>
               </button>
             </div>
           </div>
 
-          <!-- Dual Layer Highlighting Editor -->
+          <!-- Visual Legend & Editor Mode Bar -->
+          <div class="editor-legend-bar">
+            <div class="legend-indicators">
+              <span class="legend-badge legend-badge-error" title="Errors are highlighted in bold red text with a wavy red underline">
+                <span class="legend-dot red-pulse"></span>
+                <strong>Red text & wavy underline:</strong> Detected Error (click to fix)
+              </span>
+              <span class="legend-badge legend-badge-success">
+                <span class="legend-dot green-dot"></span>
+                <strong>Green:</strong> Corrected text
+              </span>
+            </div>
+            <div class="editor-view-switch">
+              <button class="view-switch-btn active" id="btnViewReview" type="button" title="Interactive visual view with red errors and 1-tap fixing">
+                <span>🔍</span> Review & Fix (<span id="reviewCountBadge">0</span>)
+              </button>
+              <button class="view-switch-btn" id="btnViewPlain" type="button" title="Plain text writing mode">
+                <span>✍️</span> Edit Plain Text
+              </button>
+            </div>
+          </div>
+
+          <!-- Interactive Editor Canvas & Raw Sync -->
           <div class="editor-wrapper" id="editorWrapper">
-            <div class="editor-highlight-layer" id="editorHighlights"></div>
+            <!-- Visual Interactive Editor Surface with real Red Text and Wavy Underlines -->
+            <div class="editor-content" id="editorContent" contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Document editor text surface"></div>
+            <!-- Plain Textarea for Raw Editing Mode & File I/O Sync -->
             <textarea class="editor-textarea" id="editorTextarea" placeholder="Paste your essay, assignment, or document here, or drag & drop a file (.txt, .docx, .pdf)..." spellcheck="false"></textarea>
+          </div>
+
+          <!-- Mobile Quick Review Floating Bar -->
+          <div class="mobile-review-pill" id="mobileReviewPill" role="button" tabindex="0">
+            <span class="pill-badge">🔴 <span id="mobilePillCount">0</span> Issues Detected</span>
+            <span class="pill-callout">Review & Quick-Fix ➔</span>
           </div>
 
           <!-- Live Word / Stats Bar -->
@@ -139,7 +243,39 @@
         <!-- Right: Live Intelligence Dashboard -->
         <div class="dashboard-card">
 
-          <!-- Overall Score Radial Gauge -->
+          <!-- 1. Detected Improvements (Placed on Top with Accept All button) -->
+          <div class="issues-feed-card">
+            <div class="feed-header">
+              <div class="feed-title-wrap">
+                <h4><span>🔍</span> Detected Improvements</h4>
+                <span class="issues-count-badge" id="issuesCountBadge">0 Issues</span>
+              </div>
+              <button class="btn btn-accent btn-sm" id="btnApplyAllSidebar" title="Apply all suggested corrections">
+                <span>✓</span> <span class="btn-label">Accept All</span>
+              </button>
+            </div>
+
+            <!-- Category Filter Pills -->
+            <div class="category-filter-pills" id="categoryFilterContainer">
+              <button class="cat-filter-btn active" data-cat="all">All</button>
+              <button class="cat-filter-btn" data-cat="grammar">Grammar</button>
+              <button class="cat-filter-btn" data-cat="spelling">Spelling</button>
+              <button class="cat-filter-btn" data-cat="punctuation">Punctuation</button>
+              <button class="cat-filter-btn" data-cat="clarity">Clarity</button>
+              <button class="cat-filter-btn" data-cat="structure">Structure</button>
+              <button class="cat-filter-btn" data-cat="vocabulary">Vocabulary</button>
+            </div>
+
+            <!-- Scrollable Issues Cards -->
+            <div class="issues-list" id="issuesList">
+              <div class="empty-issues-placeholder">
+                <span>✨</span>
+                <p>No issues detected yet. Enter text and click <strong>Analyze Writing</strong> or load a sample document!</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. Overall Score Radial Gauge (Placed Downwards) -->
           <div class="score-overview-box">
             <div class="gauge-container">
               <svg class="gauge-svg" viewBox="0 0 100 100">
@@ -166,8 +302,11 @@
             </div>
           </div>
 
-          <!-- Sub-Scores Breakdown -->
+          <!-- 3. Sub-Scores Breakdown / Benchmark Graph (Placed Downwards) -->
           <div class="subscores-box">
+            <div class="subscores-heading" style="margin-bottom: 0.85rem; display: flex; align-items: center; justify-content: space-between;">
+              <span style="font-weight: 700; font-size: 0.92rem; color: var(--text-main);">📊 Linguistic Dimension Breakdown</span>
+            </div>
             <!-- Grammar -->
             <div class="subscore-item">
               <div class="subscore-header">
@@ -231,33 +370,6 @@
               </div>
               <div class="progress-track">
                 <div class="progress-fill" id="progressReadability" style="width: 0%; background: #38bdf8;"></div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Issues Feed with Filter Tabs -->
-          <div class="issues-feed-card">
-            <div class="feed-header">
-              <h4><span>🔍</span> Detected Improvements</h4>
-              <span class="issues-count-badge" id="issuesCountBadge">0 Issues</span>
-            </div>
-
-            <!-- Category Filter Pills -->
-            <div class="category-filter-pills" id="categoryFilterContainer">
-              <button class="cat-filter-btn active" data-cat="all">All</button>
-              <button class="cat-filter-btn" data-cat="grammar">Grammar</button>
-              <button class="cat-filter-btn" data-cat="spelling">Spelling</button>
-              <button class="cat-filter-btn" data-cat="punctuation">Punctuation</button>
-              <button class="cat-filter-btn" data-cat="clarity">Clarity</button>
-              <button class="cat-filter-btn" data-cat="structure">Structure</button>
-              <button class="cat-filter-btn" data-cat="vocabulary">Vocabulary</button>
-            </div>
-
-            <!-- Scrollable Issues Cards -->
-            <div class="issues-list" id="issuesList">
-              <div class="empty-issues-placeholder">
-                <span>✨</span>
-                <p>No issues detected yet. Enter text and click <strong>Analyze Writing</strong> or load a sample document!</p>
               </div>
             </div>
           </div>
@@ -522,24 +634,37 @@
 
   </main>
 
-  <!-- Interactive Popover for In-Text Error Clicks -->
-  <div class="issue-popover" id="errorPopover">
+  <!-- Popover Backdrop for Mobile Bottom Sheet -->
+  <div class="popover-backdrop" id="popoverBackdrop"></div>
+
+  <!-- Interactive Popover & Mobile Bottom Sheet for In-Text Error Clicks -->
+  <div class="issue-popover" id="errorPopover" role="dialog" aria-modal="true" aria-labelledby="popoverBadge">
+    <div class="popover-drag-pill" aria-hidden="true"></div>
     <div class="popover-header">
-      <span class="popover-badge" id="popoverBadge">Grammar</span>
-      <button class="btn btn-secondary btn-sm" id="btnDismissPopover" style="padding: 1px 6px; font-size: 0.75rem;">✕</button>
+      <div class="popover-title-row">
+        <span class="popover-badge" id="popoverBadge">Grammar • Error</span>
+        <span class="popover-status-tag" id="popoverStatusTag">Needs Attention</span>
+      </div>
+      <button class="popover-close-btn" id="btnDismissPopover" aria-label="Dismiss">✕</button>
     </div>
     <div class="popover-diff">
-      <span class="token-orig" id="popoverOrig"></span>
+      <div class="diff-chip diff-chip-orig" title="Original text with error">
+        <span class="chip-label">ORIGINAL</span>
+        <span class="token-orig" id="popoverOrig"></span>
+      </div>
       <span class="token-arrow">➔</span>
-      <span class="token-repl" id="popoverRepl"></span>
+      <div class="diff-chip diff-chip-repl" title="Suggested correction">
+        <span class="chip-label">SUGGESTION</span>
+        <span class="token-repl" id="popoverRepl"></span>
+      </div>
     </div>
     <div class="popover-explanation" id="popoverExpl"></div>
     <div class="popover-actions">
       <button class="btn btn-secondary btn-sm" id="btnPopoverExplain">
-        <span>🎓</span> Explain
+        <span>🎓</span> <span class="btn-label">Why is this wrong?</span>
       </button>
       <button class="btn btn-accent btn-sm" id="btnPopoverAccept">
-        <span>✓</span> Accept Correction
+        <span>✓</span> <span class="btn-label">Accept Correction</span>
       </button>
     </div>
   </div>
@@ -551,6 +676,6 @@
   </div>
 
   <!-- Application Logic -->
-  <script src="/static/js/app.js"></script>
+  <script src="/static/js/app.js?v=4.0"></script>
 </body>
 </html>
