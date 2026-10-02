@@ -384,32 +384,74 @@ function initEditorEvents() {
     });
   }
 
-  // Drag and drop support
+  // Drag and drop support for top document input hub
   const dropZone = elements.fileDropZone;
-  ['dragenter', 'dragover'].forEach(name => {
-    dropZone.addEventListener(name, (e) => {
-      e.preventDefault();
-      dropZone.classList.add('drag-active');
+  if (dropZone) {
+    ['dragenter', 'dragover'].forEach(name => {
+      dropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('drag-active');
+      });
     });
-  });
 
-  ['dragleave', 'drop'].forEach(name => {
-    dropZone.addEventListener(name, (e) => {
+    ['dragleave', 'drop'].forEach(name => {
+      dropZone.addEventListener(name, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('drag-active');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
       e.preventDefault();
       dropZone.classList.remove('drag-active');
+      const files = e.dataTransfer.files;
+      if (files && files.length > 0) {
+        handleFileUpload(files[0]);
+      }
     });
-  });
 
-  dropZone.addEventListener('drop', (e) => {
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      handleFileUpload(files[0]);
-    }
-  });
+    dropZone.addEventListener('click', (e) => {
+      // Don't double-trigger if clicking a button inside dropzone
+      if (e.target.closest('button')) return;
+      if (elements.fileUploadInput) elements.fileUploadInput.click();
+    });
+  }
 
-  dropZone.addEventListener('click', () => {
-    elements.fileUploadInput.click();
-  });
+  // Top Choose File button
+  const btnBrowseFile = document.getElementById('btnBrowseFile');
+  if (btnBrowseFile && elements.fileUploadInput) {
+    btnBrowseFile.addEventListener('click', (e) => {
+      e.stopPropagation();
+      elements.fileUploadInput.click();
+    });
+  }
+
+  // Top Load Sample button
+  const btnLoadSampleTop = document.getElementById('btnLoadSampleTop');
+  if (btnLoadSampleTop && elements.btnLoadSample) {
+    btnLoadSampleTop.addEventListener('click', (e) => {
+      e.stopPropagation();
+      elements.btnLoadSample.click();
+    });
+  }
+
+  // Remove Loaded File Pill button
+  const btnRemoveLoadedFile = document.getElementById('btnRemoveLoadedFile');
+  if (btnRemoveLoadedFile) {
+    btnRemoveLoadedFile.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const filePill = document.getElementById('fileLoadedPill');
+      if (filePill) filePill.style.display = 'none';
+      if (elements.fileUploadInput) elements.fileUploadInput.value = '';
+      setEditorText('');
+      state.currentAnalysis = null;
+      if (elements.reviewCountBadge) elements.reviewCountBadge.textContent = '0';
+      if (elements.mobileReviewPill) elements.mobileReviewPill.style.display = 'none';
+      resetDashboard();
+      hidePopover();
+      showToast("Cleared loaded document.", "🗑️");
+    });
+  }
 }
 
 // Header & Action Events
@@ -445,6 +487,9 @@ function initHeaderActions() {
   elements.btnClearEditor.addEventListener('click', () => {
     setEditorText('');
     state.currentAnalysis = null;
+    const filePill = document.getElementById('fileLoadedPill');
+    if (filePill) filePill.style.display = 'none';
+    if (elements.fileUploadInput) elements.fileUploadInput.value = '';
     if (elements.reviewCountBadge) elements.reviewCountBadge.textContent = '0';
     if (elements.mobileReviewPill) elements.mobileReviewPill.style.display = 'none';
     resetDashboard();
@@ -605,6 +650,14 @@ async function handleFileUpload(file) {
     // Put extracted text into editor
     elements.docTitleInput.value = data.document_name;
     setEditorText(data.original_text);
+
+    // Show loaded file pill in the top input hub
+    const filePill = document.getElementById('fileLoadedPill');
+    const fileNameSpan = document.getElementById('fileLoadedName');
+    if (filePill && fileNameSpan) {
+      fileNameSpan.textContent = file.name;
+      filePill.style.display = 'inline-flex';
+    }
 
     renderAnalysisResults(data);
     showToast(`File extracted and analyzed successfully!`, "📄");

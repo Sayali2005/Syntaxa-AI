@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Syntaxa AI — AI-Powered Context-Aware Writing Intelligence</title>
   <meta name="description" content="Syntaxa AI analyzes grammar, spelling, punctuation, clarity, sentence structure, and vocabulary to evaluate and explain writing improvements.">
-  <link rel="stylesheet" href="/static/css/styles.css?v=4.0">
+  <link rel="stylesheet" href="/static/css/styles.css?v=4.1">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220%22%3E<text y=%2226%22 font-size=%2226%22>✨</text></svg>">
 </head>
 <body>
@@ -162,6 +162,47 @@
         
         <!-- Left: Interactive Editor -->
         <div class="editor-card">
+          
+          <!-- Top Input & File Upload Hub (Visibly placed right at the top - no scrolling required) -->
+          <div class="input-hub-top">
+            <div class="file-dropzone file-dropzone-top" id="fileDropZone" role="button" tabindex="0" title="Click or drag and drop to upload document">
+              <div class="dropzone-left">
+                <div class="dropzone-icon">📥</div>
+                <div class="dropzone-text-group">
+                  <div class="dropzone-title">
+                    <strong>Upload or Drop Document</strong>
+                    <span class="file-badges">
+                      <span class="file-badge">.PDF</span>
+                      <span class="file-badge">.DOCX</span>
+                      <span class="file-badge">.TXT</span>
+                      <span class="file-badge">.MD</span>
+                    </span>
+                  </div>
+                  <div class="dropzone-hint">
+                    Drop PDF, DOCX, TXT file here or click to browse
+                  </div>
+                </div>
+              </div>
+              <div class="dropzone-actions">
+                <button type="button" class="btn btn-secondary btn-sm" id="btnBrowseFile" title="Browse files from your computer">
+                  <span>📁</span> <span class="btn-label">Choose File</span>
+                </button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btnLoadSampleTop" title="Load sample assignment document">
+                  <span>📝</span> <span class="btn-label">Load Sample</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Active Loaded File Pill (Shown when a document is uploaded) -->
+            <div class="file-loaded-pill" id="fileLoadedPill" style="display: none;">
+              <span class="file-pill-icon">📄</span>
+              <span class="file-pill-label">Loaded File:</span>
+              <span class="file-pill-name" id="fileLoadedName">document.pdf</span>
+              <button type="button" class="file-pill-remove" id="btnRemoveLoadedFile" title="Clear loaded document">✕</button>
+            </div>
+          </div>
+
+          <!-- Document Header Bar -->
           <div class="editor-header-bar">
             <div class="doc-meta">
               <input type="text" class="doc-title-input" id="docTitleInput" value="Assignment: Deep Learning & NLP" placeholder="Document Title..." aria-label="Document Title">
@@ -187,11 +228,11 @@
             <div class="legend-indicators">
               <span class="legend-badge legend-badge-error" title="Errors are highlighted in bold red text with a wavy red underline">
                 <span class="legend-dot red-pulse"></span>
-                <strong>Red text & wavy underline:</strong> Detected Error (click to fix)
+                <strong>Red text & wavy underline:</strong> Error (click to fix)
               </span>
               <span class="legend-badge legend-badge-success">
                 <span class="legend-dot green-dot"></span>
-                <strong>Green:</strong> Corrected text
+                <strong>Green:</strong> Corrected
               </span>
             </div>
             <div class="editor-view-switch">
@@ -204,7 +245,7 @@
             </div>
           </div>
 
-          <!-- Interactive Editor Canvas & Raw Sync -->
+          <!-- Interactive Editor Canvas & Raw Sync (Main Text Entry Area) -->
           <div class="editor-wrapper" id="editorWrapper">
             <!-- Visual Interactive Editor Surface with real Red Text and Wavy Underlines -->
             <div class="editor-content" id="editorContent" contenteditable="true" spellcheck="false" role="textbox" aria-multiline="true" aria-label="Document editor text surface"></div>
@@ -228,14 +269,6 @@
             </div>
             <div class="mode-badge-indicator" id="currentModeIndicator" style="font-size: 0.78rem; color: var(--text-muted);">
               Active Engine: <strong>spaCy Core Web LG + Context Patcher</strong>
-            </div>
-          </div>
-
-          <!-- Drag and Drop Zone -->
-          <div class="file-dropzone" id="fileDropZone">
-            <div class="dropzone-icon">📥</div>
-            <div class="dropzone-text">
-              <strong>Drag & drop documents here</strong> or click <em>Upload</em> above. Supports <strong>.txt</strong>, <strong>.docx</strong>, and <strong>.pdf</strong> files.
             </div>
           </div>
         </div>
@@ -676,6 +709,6 @@
   </div>
 
   <!-- Application Logic -->
-  <script src="/static/js/app.js?v=4.0"></script>
+  <script src="/static/js/app.js?v=4.1"></script>
 </body>
 </html>
